@@ -5,15 +5,19 @@ from selenium.webdriver.support.ui import WebDriverWait
 import time
 import requests
 import datetime
+import configparser
+
+config = configparser.ConfigParser()
+config.read("config.ini")
+username = config['xingzhe']['username']
+password = config['xingzhe']['password']
 
 def get_cookie():
     options = Options()
     options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    options.add_argument("headless")
     driver = webdriver.Chrome(options=options)
     driver.get("https://imxingzhe.com/user/login")
-
-    username = '13730916126'
-    password = 'Zc19990816'
 
     username_input = driver.find_element("name", "account")
     username_input.send_keys(username)
@@ -36,6 +40,8 @@ def get_cookie():
     cookies = driver.get_cookies()
     cookies = {cookie['name']: cookie['value'] for cookie in cookies}
     return cookies
+
+cookies = get_cookie()
 
 def get_user_id(cookies):
     response = requests.get('https://www.imxingzhe.com/api/v4/account/get_user_info/', cookies=cookies)
@@ -80,12 +86,18 @@ def download_record(record_id, cookies):
     url = f'https://www.imxingzhe.com/xing/{record_id}/gpx/'
     save_path = f'gpx/xingzhe_{record_id}.gpx'
     download_file(url, cookies, save_path)
+    return save_path
 
 
-cookies = get_cookie()
-user_id = get_user_id(cookies)
-last_record = get_latest_record(user_id, cookies)
-title = last_record['title']
-record_id = last_record['id']
-print(f'download {title} ({record_id})')
-download_record(record_id, cookies)
+def download_latest():
+    user_id = get_user_id(cookies)
+    last_record = get_latest_record(user_id, cookies)
+    title = last_record['title']
+    record_id = last_record['id']
+    print(f'download {title} ({record_id})')
+    file_path = download_record(record_id, cookies)
+    return title, file_path
+
+
+if __name__ == '__main__':
+    download_latest()

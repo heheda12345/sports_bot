@@ -1,0 +1,13 @@
+[strava]
+client_id = 555555
+client_secret = aaaaaaaaaaaaaaaaaaaaaaaaaaa
+redirect_url = https://localhost:8000
+[xingzhe]
+username = aaaaaa
+password = ************
+[ssl] # generate by openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
+certfile = /***/cert.pem
+keyfile = /***/key.pem
+[telegram]
+bot_token = 5555555:aaaaaaaaaaaaaaaaaaaaaaaaaaa
+

@@ -62,7 +62,7 @@ def wait_for_upload(upload_id, max_second=20):
             return f"Upload success: {resp_json['activity_id']}"
     return "Upload timeout"
 
-def post_activity(file_path, name, description=None, trainer=None, commute=None, external_id=None):
+def post_activity(file_path, name, activity_type=None, description=None, trainer=None, commute=None, external_id=None):
     init_session()
     data_type = file_path.split(".")[-1]
     if data_type == 'gz':
@@ -73,6 +73,8 @@ def post_activity(file_path, name, description=None, trainer=None, commute=None,
     url = "https://www.strava.com/api/v3/uploads"
     with open(file_path, 'rb') as f:
         data = {'name': name, 'data_type': data_type}
+        if activity_type:
+            data['activity_type'] = activity_type
         if description:
             data['description'] = description
         if trainer:
@@ -81,6 +83,7 @@ def post_activity(file_path, name, description=None, trainer=None, commute=None,
             data['commute'] = commute
         if external_id:
             data['external_id'] = external_id
+        logging.info(f"Upload post: {data}")
         response = strava.post(url, files={'file': f}, data=data)
         logging.info(f"Upload response: code={response.status_code}, reason={response.reason}, text={response.text}")
         text_json = json.loads(response.text)

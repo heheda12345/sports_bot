@@ -1,0 +1,6 @@
+eviltransform
+Flask
+requests-oauthlib
+telebot
+selenium
+tqdm

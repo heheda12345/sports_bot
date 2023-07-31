@@ -10,6 +10,8 @@ config = configparser.ConfigParser()
 config.read("config.ini")
 client_id = config['strava']['client_id']
 client_secret = config['strava']['client_secret']
+server_ip = config['server']['server_ip']
+server_port = config['server']['server_port']
 redirect_url = config['strava']['redirect_url'] + "/strava_oauth"
 ssl_context = (config['ssl']['certfile'], config['ssl']['keyfile'])
 session = OAuth2Session(client_id=client_id, redirect_uri=redirect_url)
@@ -65,4 +67,4 @@ def strava():
 
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=8000, debug=True, ssl_context=ssl_context)
+    app.run(host=server_ip, port=server_port, debug=True, ssl_context=ssl_context)

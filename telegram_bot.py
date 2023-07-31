@@ -7,6 +7,7 @@ import strava
 import convert
 import datetime
 import xml.etree.ElementTree as ET
+import os
 
 config = configparser.ConfigParser()
 config.read("config.ini")
@@ -17,6 +18,8 @@ bot = telebot.TeleBot(BOT_TOKEN)
 help_msg = "hello world"
 
 last_gpx_file = None
+if not os.path.exists('./gpx'):
+    os.makedirs('./gpx')
 
 @bot.message_handler(content_types=['document'])
 def handle_file(message):

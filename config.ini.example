@@ -1,6 +1,8 @@
 [strava]
 client_id = 555555
 client_secret = aaaaaaaaaaaaaaaaaaaaaaaaaaa
+server_ip = localhost
+server_port = 8000
 redirect_url = https://localhost:8000
 [xingzhe]
 username = aaaaaa
